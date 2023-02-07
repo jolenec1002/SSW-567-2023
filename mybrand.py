@@ -8,5 +8,3 @@ def my_brand(name):
     # dd/mm/YY H:M:S
     dt= now.strftime("%d/%m/%Y %H:%M:%S")
     print("=*=*=*= " + dt + " =*=*=*=")
-
-my_brand("567")
