@@ -11,7 +11,8 @@ jobs:
       - checkout
       - run:
           command:
-            pip install pytest &&
+            pip install pytest
+            pip install requests &&
             pytest --junitxml=test-results/junit.xml ./HW04a/TestGithubAPI567.py
       - store_test_results:
           path: test-results
