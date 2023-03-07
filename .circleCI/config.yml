@@ -18,7 +18,7 @@ jobs:
           path: test-results
 
 workflows:
-  testing_HW05_Triangles:
+  testing_github_mocking:
     jobs:
       - build-and-test
 
