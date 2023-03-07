@@ -1,6 +1,5 @@
 import requests
 import json
-from github import Github
 import re
 from mybrand import my_brand
 my_brand("SSW 567 HW 04a-Develop with the Perspective of the Tester in Mind")
@@ -11,29 +10,22 @@ def github(username):
     if not(is_valid(username)):
         return "Invalid Input"
     
-    g = Github()
-    user = g.get_user(username)
-    repo_list = []
-    global dict
+    api_url = "https://api.github.com/users/" + username + "/repos"
+    req = requests.get(api_url)
+    repo = json.loads(req.content)
+    rVal = {}
+      
+    for repo_object in repo:
+        commitNom = get_commits(username,repo_object['name'])
+        rVal[repo_object['name']] = commitNom
 
-    # Putting the Repository names in a list
-    for repo in user.get_repos():
-        repo_list.append(repo.full_name)
+    return rVal
 
-    to_remove = username + "/"
-    # Removing the username from the Repository names
-    for i in range(len(repo_list)):
-        repo_list[i]=repo_list[i].replace(to_remove,"")
-        repo_name = repo_list[i]
-
-        # Setting up the API url for commits
-        api_url = f"https://api.github.com/repos/" + username + "/" + repo_name + "/commits"
-        com = requests.get(api_url)
-        commits = json.loads(com.content)
-        commits_number = len(commits) 
-        dict[repo_name] = commits_number
-
-    return dict
+def get_commits(user,repo):
+    commit = "https://api.github.com/repos/" + user + "/" + repo + "/commits"
+    getReq = requests.get(commit)
+    commitContent = json.loads(getReq.content)
+    return len(commitContent)
 
 def is_valid(username):
     symbols = re.compile('[@_!#$%^&*()<>?/\|}{~:]')
@@ -50,10 +42,8 @@ def is_valid(username):
         return True
 
 
-#print(github("jolenec1002"))
+print(github("jolenec1002"))
 my_brand("SSW 567 HW 04a-Develop with the Perspective of the Tester in Mind")
-
-
 
 
 
